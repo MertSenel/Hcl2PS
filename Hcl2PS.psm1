@@ -34,5 +34,5 @@ $Script:cliPath = Join-Path $PSScriptRoot 'bin' $Hcl2JsonVersion $executableName
 if((test-path $cliPath) -ne $true){
     Write-Error "Problem with the CLI Executable" -ErrorAction Stop
 } elseif($IsLinux -or $IsMacOS){
-    
+    & chmod +x $cliPath
 }
