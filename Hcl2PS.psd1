@@ -1,6 +1,6 @@
 @{
     RootModule        = 'Hcl2PS.psm1'
-    ModuleVersion     = '0.1.0'
+    ModuleVersion     = '0.2.0'
     GUID              = 'b6e667f0-dee0-4f7c-acb7-d57d09d4c0d8'
     Author            = 'Mert Senel'
     CompanyName       = 'Mert Senel'
@@ -8,8 +8,7 @@
 
     Description       = @'
     PowerShell Module to Wrap Hcl2Json CLI tool for Easy distribution of PowerShell cmdlets to Parse HCL Files
-    It can be used to Parse Terraform and other HCL format files into Powershell objects to be used in programmatical access in powershell scripts in 
-    DevOps use cases.
+    It can be used to Parse Terraform and other HCL format files into Powershell objects to be used in programmatical access in powershell scripts in DevOps use cases.
 '@
 
     FunctionsToExport = @(
