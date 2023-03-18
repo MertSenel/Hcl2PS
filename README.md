@@ -32,6 +32,12 @@ The cmdlet `ConvertFrom-Hcl` accepts input in two ways, you can either pass a fi
 
 `Get-Content .\main.tf -Raw | ConvertFrom-Hcl`
 
+As an output, the Cmdlet will return a Powershell object which has the properties mapped from the HCL syntax file's contents.
+
+### Example
+
+![](./media/Hcl2PS-Example-1.png)
+
 ## Contributions & Issues
 
 Contributions are welcomed, please raise a Pull Request with your proposed modifications if you wish to make any changes.
