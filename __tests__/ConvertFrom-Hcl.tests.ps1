@@ -1,7 +1,4 @@
 Import-Module "$PSScriptRoot/../Hcl2PS.psd1" -Force
-$TestDataPath = Join-Path $PSScriptRoot "testData"
-Write-Host "TestDataPath: $TestDataPath"
-
 
 Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
 
