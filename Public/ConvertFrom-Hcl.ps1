@@ -25,8 +25,7 @@ function ConvertFrom-Hcl {
         }
         if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
             "hcl2json_linux_arm64"
-        }
-        else{
+        } else{
             "hcl2json_linux_amd64"
         }
     } elseif ($IsMacOS) {
@@ -35,8 +34,7 @@ function ConvertFrom-Hcl {
         }
         if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
             "hcl2json_darwin_arm64"
-        }
-        else{
+        } else{
             "hcl2json_darwin_amd64"
         }
     } else{
