@@ -26,12 +26,18 @@ function ConvertFrom-Hcl {
         if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
             "hcl2json_linux_arm64"
         }
+        else{
+            "hcl2json_linux_amd64"
+        }
     } elseif ($IsMacOS) {
         if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {
             "hcl2json_darwin_amd64"
         }
         if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
             "hcl2json_darwin_arm64"
+        }
+        else{
+            "hcl2json_darwin_amd64"
         }
     } else{
         Write-Error "Operating System and or Process Architecture Unkown or Unsupported" -ErrorAction Stop
