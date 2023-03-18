@@ -1,4 +1,11 @@
+
+
+![](./media/Hcl2PS-Module-Logo.png)
+
+[![.github/workflows/ci.yml](https://github.com/MertSenel/Hcl2PS/actions/workflows/ci.yml/badge.svg)](https://github.com/MertSenel/Hcl2PS/actions/workflows/ci.yml) [![publish-module](https://github.com/MertSenel/Hcl2PS/actions/workflows/publish-module.yml/badge.svg)](https://github.com/MertSenel/Hcl2PS/actions/workflows/publish-module.yml) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 # Hcl2PS
+
 PowerShell Module to Wrap Hcl2Json CLI tool for Easy distribution of PowerShell cmdlets to Parse HCL Files
 
 Thanks to @tmccombs for the original CLI tool, you can see the original code of the CLI tool in below urls.
