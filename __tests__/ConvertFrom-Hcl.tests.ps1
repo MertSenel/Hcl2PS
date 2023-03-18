@@ -5,7 +5,7 @@ $TestDataPath = Join-Path $PSScriptRoot "testData"
 Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
 
     BeforeAll {
-        $filePath = (Join-Path $TestDataPath main.tf)
+        $filePath = Join-Path $TestDataPath main.tf
         write-host "File Path: $filepath"
         $actual = ConvertFrom-Hcl -Path $filePath 
     }
@@ -24,7 +24,7 @@ Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
 Describe "Test Conversions outputs.tf" -Tag 'outputs.tf File Tests' {
 
     BeforeAll {
-        $filePath = (Join-Path $TestDataPath outputs.tf)
+        $filePath = Join-Path $TestDataPath outputs.tf
         write-host "File Path: $filepath"
         $actual = ConvertFrom-Hcl -Path $filePath
     }
@@ -51,7 +51,7 @@ Describe "Test Conversions outputs.tf" -Tag 'outputs.tf File Tests' {
 Describe "Test Conversions sample-policy.hcl" -Tag 'sample-policy.hcl File Tests' {
 
     BeforeAll {
-        $filePath = (Join-Path $TestDataPath sample-policy.hcl)
+        $filePath = Join-Path $TestDataPath sample-policy.hcl
         write-host "File Path: $filepath"
         $actual = ConvertFrom-Hcl -Path $filePath
     }   
