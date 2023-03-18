@@ -1,6 +1,8 @@
 # Hcl2PS
 PowerShell Module to Wrap Hcl2Json CLI tool for Easy distribution of PowerShell cmdlets to Parse HCL Files
 
+Thanks to @tmccombs for the original CLI tool, you can see the original code of the CLI tool in below urls.
+
 hcl2Json Project Url: [https://github.com/tmccombs/hcl2json](https://github.com/tmccombs/hcl2json)
 
 hcl2Json Project License: [https://github.com/tmccombs/hcl2json/blob/main/LICENSE](https://github.com/tmccombs/hcl2json/blob/main/LICENSE)
