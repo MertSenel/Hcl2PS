@@ -5,8 +5,6 @@ on:
       - "changelog.md"
     branches:
       - main
-      - fix/*
-      - feature/*
 
   pull_request:
     paths-ignore:
