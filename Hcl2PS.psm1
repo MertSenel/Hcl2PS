@@ -28,10 +28,10 @@ $Script:executableName = if ($IsWindows -or ($PSVersionTable.PSVersion.Major -eq
     Write-Error "Operating System and or Process Architecture Unkown or Unsupported" -ErrorAction Stop
 }
 
-$Script:cliPath = Join-Path -Path $PSScriptRoot -ChildPath 'bin' -PassThru |
-                                        Join-Path -ChildPath $Hcl2JsonVersion -PassThru |
-                                        Join-Path -ChildPath $executableName
-
+$scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+$binPath = Join-Path -Path $scriptPath -ChildPath 'bin'
+$jsonVersionPath = Join-Path -Path $binPath -ChildPath $Hcl2JsonVersion
+$Script:cliPath = Join-Path -Path $jsonVersionPath -ChildPath $executableName
 
 if((test-path $cliPath) -ne $true){
     Write-Error "Problem with the CLI Executable" -ErrorAction Stop
