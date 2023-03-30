@@ -18,8 +18,11 @@ function ConvertFrom-Hcl {
     }
  
 
-
-
-    $output = ($HclContent | & $cliPath | ConvertFrom-Json -Depth 200)
+    if ($PSVersionTable.PSVersion.Major -ge 6) {
+        $output = ($HclContent | & $cliPath | ConvertFrom-Json -Depth 200)
+    } else {
+        $output = ($HclContent | & $cliPath | ConvertFrom-Json)
+    }
+    
     return $output
 }
