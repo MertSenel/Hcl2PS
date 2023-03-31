@@ -4,7 +4,7 @@ foreach ($directory in @('Public', 'Private')) {
     Get-ChildItem -Path "$PSScriptRoot\$directory\*.ps1" | ForEach-Object { . $_.FullName }
 }
 
-$Script:executableName = if ($IsWindows) {
+$Script:executableName = if ($IsWindows -or ($PSVersionTable.PSVersion.Major -eq 5)) {
     "hcl2json_windows_amd64.exe"
 } elseif ($IsLinux) {
     if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {
@@ -28,8 +28,10 @@ $Script:executableName = if ($IsWindows) {
     Write-Error "Operating System and or Process Architecture Unkown or Unsupported" -ErrorAction Stop
 }
 
-$Script:cliPath = Join-Path $PSScriptRoot 'bin' $Hcl2JsonVersion $executableName
-
+$scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+$binPath = Join-Path -Path $scriptPath -ChildPath 'bin'
+$jsonVersionPath = Join-Path -Path $binPath -ChildPath $Hcl2JsonVersion
+$Script:cliPath = Join-Path -Path $jsonVersionPath -ChildPath $executableName
 
 if((test-path $cliPath) -ne $true){
     Write-Error "Problem with the CLI Executable" -ErrorAction Stop

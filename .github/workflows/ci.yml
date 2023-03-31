@@ -21,8 +21,15 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v1
-      - name: Run Continuous Integration
+      - name: Run Continuous Integration Pwsh
         shell: pwsh
+        run: |
+          cd ./__tests__
+          Invoke-Pester -Output Detailed
+      
+      - name: Run Continuous Integration Powershell
+        if: runner.os == 'Windows'
+        shell: powershell
         run: |
           cd ./__tests__
           Invoke-Pester -Output Detailed
