@@ -24,5 +24,6 @@ jobs:
       - name: Run Continuous Integration Pwsh
         shell: pwsh
         run: |
+          $PSVersionTable
           cd ./__tests__
           Invoke-Pester -Output Detailed

@@ -25,5 +25,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
+          $PSVersionTable
           cd ./__tests__
           Invoke-Pester -Output Detailed
