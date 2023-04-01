@@ -1,0 +1,27 @@
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+      - "changelog.md"
+    branches:
+      - main
+
+  pull_request:
+    paths-ignore:
+    - "README.md"
+    - "changelog.md"
+    branches:
+      - main
+
+jobs:
+  validate_powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Continuous Integration Powershell
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $PSVersionTable
+          cd ./__tests__/unit
+          Invoke-Pester -Output Detailed

@@ -14,7 +14,7 @@ on:
       - main
 
 jobs:
-  validate:
+  validate_pwsh:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -24,12 +24,6 @@ jobs:
       - name: Run Continuous Integration Pwsh
         shell: pwsh
         run: |
-          cd ./__tests__
-          Invoke-Pester -Output Detailed
-      
-      - name: Run Continuous Integration Powershell
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: |
-          cd ./__tests__
+          $PSVersionTable
+          cd ./__tests__/unit
           Invoke-Pester -Output Detailed
