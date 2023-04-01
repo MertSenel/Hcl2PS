@@ -1,0 +1,32 @@
+# Publish module workflow
+name: validate-module-install
+on:
+  workflow_dispatch:
+jobs:
+  validate_pwsh:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Validate Installation From Gallery Tests Pwsh
+        shell: pwsh
+        run: |
+          $PSVersionTable
+          cd ./__tests__/integration
+          Invoke-Pester -Output Detailed
+
+  validate_powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Validate Installation From Gallery Tests Powershell
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $PSVersionTable
+          cd ./__tests__/integration
+          Invoke-Pester -Output Detailed
+
+

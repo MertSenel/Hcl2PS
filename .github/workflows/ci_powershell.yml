@@ -14,11 +14,8 @@ on:
       - main
 
 jobs:
-  validate:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest]
+  validate_powershell:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
       - name: Run Continuous Integration Powershell
@@ -26,5 +23,5 @@ jobs:
         shell: powershell
         run: |
           $PSVersionTable
-          cd ./__tests__
+          cd ./__tests__/unit
           Invoke-Pester -Output Detailed

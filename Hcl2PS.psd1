@@ -1,6 +1,6 @@
 @{
     RootModule        = 'Hcl2PS.psm1'
-    ModuleVersion     = '0.3.0'
+    ModuleVersion     = '0.4.0'
     GUID              = 'b6e667f0-dee0-4f7c-acb7-d57d09d4c0d8'
     Author            = 'Mert Senel'
     CompanyName       = 'Mert Senel'
