@@ -1,5 +1,6 @@
 Install-Module -Name Hcl2PS -Force
 Import-Module -Name Hcl2PS -Force
+#Import-Module "$PSScriptRoot/../../Hcl2PS.psd1" -Force  # Uncomment to test locally
 
 Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
 
@@ -58,5 +59,56 @@ Describe "Test Conversions sample-policy.hcl" -Tag 'sample-policy.hcl File Tests
     It "sample-policy.hcl nested property value test" {
 
         $actual.path.'auth/roger*'.capabilities | Should -Be @('create','read','update','delete','list')
+    }
+}
+
+#######################
+#### AsJson Tests #####
+#######################
+Describe "Test Conversions main.tf with -AsJson" -Tag 'main.tf File Tests with JSON' {
+
+    BeforeAll {
+        $filePath = ".\..\testData\main.tf"
+        $expectedJsonPath = ".\..\testData\main.json" # Path to the expected JSON file
+        write-host "File Path: $filepath"
+        $jsonString = ConvertFrom-Hcl -Path $filePath -AsJson
+        $actual = $jsonString | ConvertFrom-Json
+        $expectedJson = Get-Content $expectedJsonPath
+    }
+
+    It "main.tf JSON string should match expected JSON" {
+        $jsonString | Should -BeExactly $expectedJson
+    }
+}
+
+Describe "Test Conversions outputs.tf with -AsJson" -Tag 'outputs.tf File Tests with JSON' {
+
+    BeforeAll {
+        $filePath = ".\..\testData\outputs.tf"
+        $expectedJsonPath = ".\..\testData\outputs.json" # Path to the expected JSON file
+        write-host "File Path: $filepath"
+        $jsonString = ConvertFrom-Hcl -Path $filePath -AsJson
+        $actual = $jsonString | ConvertFrom-Json
+        $expectedJson = Get-Content $expectedJsonPath
+    }
+
+    It "outputs.tf JSON string should match expected JSON" {
+        $jsonString | Should -BeExactly $expectedJson
+    }
+}
+
+Describe "Test Conversions sample-policy.hcl with -AsJson" -Tag 'sample-policy.hcl File Tests with JSON' {
+
+    BeforeAll {
+        $filePath = ".\..\testData\sample-policy.hcl"
+        $expectedJsonPath = ".\..\testData\sample-policy.json" # Path to the expected JSON file
+        write-host "File Path: $filepath"
+        $jsonString = ConvertFrom-Hcl -Path $filePath -AsJson
+        $actual = $jsonString | ConvertFrom-Json
+        $expectedJson = Get-Content $expectedJsonPath
+    }
+
+    It "sample-policy.hcl JSON string should match expected JSON" {
+        $jsonString | Should -BeExactly $expectedJson
     }
 }

@@ -1,0 +1,89 @@
+{
+    "data": {
+        "vault_generic_secret": {
+            "azure_credentials": [
+                {
+                    "path": "secret/${var.vault_user}/azure/credentials"
+                }
+            ]
+        }
+    },
+    "provider": {
+        "azurerm": [
+            {
+                "client_id": "${data.vault_generic_secret.azure_credentials.data[\"client_id\"]}",
+                "client_secret": "${data.vault_generic_secret.azure_credentials.data[\"client_secret\"]}",
+                "subscription_id": "${data.vault_generic_secret.azure_credentials.data[\"subscription_id\"]}",
+                "tenant_id": "${data.vault_generic_secret.azure_credentials.data[\"tenant_id\"]}"
+            }
+        ],
+        "vault": [
+            {
+                "address": "${var.vault_addr}"
+            }
+        ]
+    },
+    "resource": {
+        "azurerm_kubernetes_cluster": {
+            "k8sexample": [
+                {
+                    "agent_pool_profile": [
+                        {
+                            "count": "${var.agent_count}",
+                            "name": "${var.agent_pool_name}",
+                            "os_disk_size_gb": "${var.os_disk_size}",
+                            "os_type": "${var.os_type}",
+                            "vm_size": "${var.vm_size}"
+                        }
+                    ],
+                    "dns_prefix": "${var.dns_prefix}",
+                    "kubernetes_version": "${var.k8s_version}",
+                    "linux_profile": [
+                        {
+                            "admin_username": "${var.admin_user}",
+                            "ssh_key": [
+                                {
+                                    "key_data": "${chomp(tls_private_key.ssh_key.public_key_openssh)}"
+                                }
+                            ]
+                        }
+                    ],
+                    "location": "${azurerm_resource_group.k8sexample.location}",
+                    "name": "${var.vault_user}-k8sexample-cluster",
+                    "resource_group_name": "${azurerm_resource_group.k8sexample.name}",
+                    "service_principal": [
+                        {
+                            "client_id": "${data.vault_generic_secret.azure_credentials.data[\"client_id\"]}",
+                            "client_secret": "${data.vault_generic_secret.azure_credentials.data[\"client_secret\"]}"
+                        }
+                    ],
+                    "tags": [
+                        {
+                            "Environment": "${var.environment}"
+                        }
+                    ]
+                }
+            ]
+        },
+        "azurerm_resource_group": {
+            "k8sexample": [
+                {
+                    "location": "${var.azure_location}",
+                    "name": "${var.resource_group_name}"
+                }
+            ]
+        },
+        "tls_private_key": {
+            "ssh_key": [
+                {
+                    "algorithm": "RSA"
+                }
+            ]
+        }
+    },
+    "terraform": [
+        {
+            "required_version": "\u003e= 0.11.11"
+        }
+    ]
+}
