@@ -27,6 +27,8 @@ Install-Module -Name Hcl2PS
 
 ## Usage
 
+### Standard Usage - PowerShell Object Output
+
 The cmdlet `ConvertFrom-Hcl` accepts input in two ways, you can either pass a filepath to the Hcl file you wish to convert to a terraform object, or you can pass the contents of the file via pipeline input. 
 
 `ConvertFrom-Hcl -Path .\main.tf`
@@ -34,10 +36,27 @@ The cmdlet `ConvertFrom-Hcl` accepts input in two ways, you can either pass a fi
 `Get-Content .\main.tf -Raw | ConvertFrom-Hcl`
 
 As an output, the Cmdlet will return a Powershell object which has the properties mapped from the HCL syntax file's contents.
-
-### Example
+#### Examples
 
 ![](./media/Hcl2PS-Example-1.png)
+
+### JSON String Output
+
+The cmdlet also supports a new -AsJson switch that allows you to return the output as a JSON string instead of a PowerShell object. This can be useful if you need to work with the data in JSON format or want to verify that the conversion to JSON is correct.
+
+`ConvertFrom-Hcl -Path .\main.tf -AsJson`
+
+`Get-Content .\main.tf -Raw | ConvertFrom-Hcl -AsJson`
+
+When using the -AsJson switch, the Cmdlet will return a JSON string that represents the same data as the standard PowerShell object output.
+
+These features provide flexibility in how you work with HCL files, allowing 
+you to choose the output format that best suits your needs.
+
+#### Examples
+
+![](./media/Hcl2PS-Example-2.png)
+![](./media/Hcl2PS-Example-3.png)
 
 ## Contributions & Issues
 
