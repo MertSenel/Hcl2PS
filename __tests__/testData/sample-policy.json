@@ -1,0 +1,99 @@
+{
+    "path": {
+        "auth/roger*": [
+            {
+                "capabilities": [
+                    "create",
+                    "read",
+                    "update",
+                    "delete",
+                    "list"
+                ]
+            }
+        ],
+        "auth/token/create": [
+            {
+                "capabilities": [
+                    "create",
+                    "read",
+                    "update",
+                    "list"
+                ]
+            }
+        ],
+        "auth/userpass/users/roger/password": [
+            {
+                "capabilities": [
+                    "update"
+                ]
+            }
+        ],
+        "secret/": [
+            {
+                "capabilities": [
+                    "list"
+                ]
+            }
+        ],
+        "secret/roger": [
+            {
+                "capabilities": [
+                    "list"
+                ]
+            }
+        ],
+        "secret/roger/*": [
+            {
+                "capabilities": [
+                    "create",
+                    "read",
+                    "update",
+                    "delete",
+                    "list"
+                ]
+            }
+        ],
+        "sys/auth": [
+            {
+                "capabilities": [
+                    "read",
+                    "list"
+                ]
+            }
+        ],
+        "sys/auth/roger*": [
+            {
+                "capabilities": [
+                    "sudo",
+                    "create",
+                    "read",
+                    "update",
+                    "delete",
+                    "list"
+                ]
+            }
+        ],
+        "sys/mounts": [
+            {
+                "capabilities": [
+                    "read",
+                    "list"
+                ]
+            }
+        ],
+        "sys/policies/acl/": [
+            {
+                "capabilities": [
+                    "list"
+                ]
+            }
+        ],
+        "sys/policies/acl/roger": [
+            {
+                "capabilities": [
+                    "read"
+                ]
+            }
+        ]
+    }
+}

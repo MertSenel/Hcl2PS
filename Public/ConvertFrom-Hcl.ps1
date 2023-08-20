@@ -6,7 +6,9 @@ function ConvertFrom-Hcl {
         
         [Parameter(ParameterSetName = 'Pipeline', ValueFromPipeline = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$InputObject
+        [string]$InputObject,
+
+        [switch]$AsJson
     )
     
     # Use the appropriate parameter set based on whether Path or Pipeline input is provided
@@ -16,12 +18,16 @@ function ConvertFrom-Hcl {
     else {
         $HclContent = $InputObject
     }
- 
 
-    if ($PSVersionTable.PSVersion.Major -ge 6) {
-        $output = ($HclContent | & $cliPath | ConvertFrom-Json -Depth 200)
-    } else {
-        $output = ($HclContent | & $cliPath | ConvertFrom-Json)
+    $output = $HclContent | & $cliPath
+
+    if (-not $AsJson) {
+        if ($PSVersionTable.PSVersion.Major -ge 6) {
+            $output = $output | ConvertFrom-Json -Depth 200
+        }
+        else {
+            $output = $output | ConvertFrom-Json
+        }
     }
     
     return $output
