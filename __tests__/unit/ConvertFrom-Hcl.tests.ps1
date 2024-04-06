@@ -1,4 +1,46 @@
-Import-Module "$PSScriptRoot/../../Hcl2PS.psd1" -Force
+# Define variables
+$moduleName = "Hcl2PS" # Replace with your actual module name
+$modulePath = "$PSScriptRoot/../../../Hcl2PS" # Replace with the path to your module directory
+$localRepositoryPath = "$PSScriptRoot/LocalPSRepository" # Path for your local repository
+$localRepositoryName = "LocalPSRepository" # A name for your local repository
+
+# Create a local repository directory if it doesn't already exist
+if (-not (Test-Path -Path $localRepositoryPath)) {
+    New-Item -ItemType Directory -Path $localRepositoryPath
+}
+
+# Register the local repository with PowerShellGet
+$repositoryExists = Get-PSRepository | Where-Object { $_.Name -eq $localRepositoryName } | Select-Object -First 1
+if ($null -eq $repositoryExists) {
+    Register-PSRepository -Name $localRepositoryName -SourceLocation $localRepositoryPath -InstallationPolicy Trusted
+} else {
+    Write-Host "Repository $localRepositoryName already exists."
+}
+
+# Publish the module to the local repository
+# Note: You might need to increment the version in the module manifest (.psd1) if republishing
+Publish-Module -Path $modulePath -Repository $localRepositoryName -NuGetApiKey "AnyKey" -Force
+
+# Uninstall the module if it's already installed (for testing purposes)
+if (Get-Module -ListAvailable | Where-Object { $_.Name -eq $moduleName }) {
+    Write-Host "Module $moduleName is already installed. Uninstalling for clean test..."
+    Uninstall-Module -Name $moduleName -AllVersions -Force
+}
+
+# Install the module from the local repository
+Install-Module -Name $moduleName -Repository $localRepositoryName -Force
+
+# Verify installation and import the module for testing
+if (Get-Module -ListAvailable | Where-Object { $_.Name -eq $moduleName }) {
+    Write-Host "Module $moduleName has been installed successfully from $localRepositoryName."
+    Import-Module $moduleName -Force
+    Write-Host "Module $moduleName imported successfully for testing."
+} else {
+    Write-Host "Failed to install or find $moduleName. Please check the logs above for errors."
+}
+
+# Import-Module "$PSScriptRoot/../../Hcl2PS.psd1" -Force
+
 
 Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
 
