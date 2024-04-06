@@ -33,7 +33,7 @@ Install-Module -Name $moduleName -Repository $localRepositoryName -Force
 # Verify installation and import the module for testing
 if (Get-Module -ListAvailable | Where-Object { $_.Name -eq $moduleName }) {
     Write-Host "Module $moduleName has been installed successfully from $localRepositoryName."
-    Import-Module $moduleName -Force
+    # Import-Module $moduleName -Force
     Write-Host "Module $moduleName imported successfully for testing."
 } else {
     Write-Host "Failed to install or find $moduleName. Please check the logs above for errors."
