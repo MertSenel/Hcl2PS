@@ -19,10 +19,11 @@ hcl2Json Project License: [https://github.com/tmccombs/hcl2json/blob/main/LICENS
 
 `Hcl2PS` is aimed to be cross-platform and tested with best effort on Windows, Linux, and MacOS.
 
-Getting started with `Hcl2PS` is easy. Simply install the module from the gallery using the following command: 
+Getting started with `Hcl2PS` is easy. Simply install and Import the module from the gallery using the following commands: 
 
 ```powershell
 Install-Module -Name Hcl2PS
+Import-Module -Name Hcl2PS
 ```
 
 ## Usage
