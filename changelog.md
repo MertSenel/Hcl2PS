@@ -1,6 +1,6 @@
 # v0.6.0
 
-Update Hcl2Json CLI to 0.6.2
+Update Hcl2Json CLI to 0.6.2 version by @MertSenel in #17
 
 # v0.5.0
 
