@@ -15,6 +15,7 @@ on:
 
 jobs:
   validate_powershell:
+    name: "validate in powershell on ${{ matrix.os }}"
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
