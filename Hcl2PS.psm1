@@ -1,4 +1,4 @@
-﻿$Script:Hcl2JsonVersion = '0.6.2'
+﻿$Script:Hcl2JsonVersion = '0.6.3'
 
 foreach ($directory in @('Public', 'Private')) {
     if (Test-Path -Path "$PSScriptRoot\$directory") {
