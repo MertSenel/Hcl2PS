@@ -1,5 +1,6 @@
 Install-Module -Name Hcl2PS -Force
 Import-Module -Name Hcl2PS -Force
+Write-Host "Hcl2PS Module Version: $(Get-Module -Name Hcl2PS).Version"
 #Import-Module "$PSScriptRoot/../../Hcl2PS.psd1" -Force  # Uncomment to test locally
 
 Describe "Test Conversions main.tf" -Tag 'main.tf File Tests' {
