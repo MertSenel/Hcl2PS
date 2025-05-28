@@ -1,0 +1,92 @@
+name: Update hcl2json CLI binaries
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs weekly on Sunday at midnight
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get latest hcl2json release
+        id: get_release
+        shell: pwsh
+        run: |
+          $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/tmccombs/hcl2json/releases/latest" | Select-Object -ExpandProperty tag_name
+          echo "latest_release=$latestRelease" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Check if update is needed
+        shell: pwsh
+        run: |
+          $currentVersion = Get-Content -Path "Hcl2PS.psm1" | Select-String -Pattern '\$Script:Hcl2JsonVersion = \"(.*?)\"' | ForEach-Object { $_.Matches.Groups[1].Value }
+          if ($latestRelease -eq $currentVersion) {
+            Write-Host "No update needed. Current version is up-to-date."
+            exit 0
+          }
+
+      - name: Determine module version update
+        id: determine_version
+        shell: pwsh
+        run: |
+          $currentModuleVersion = Get-Content -Path "Hcl2PS.psd1" | Select-String -Pattern 'ModuleVersion\s+=\s+\"(.*?)\"' | ForEach-Object { $_.Matches.Groups[1].Value }
+          $currentParts = $currentModuleVersion -split '\.'
+          $latestParts = $latestRelease -split '\.'
+
+          if ($latestParts[0] -ne $currentParts[0]) {
+            $newVersion = "$(($currentParts[0] + 1)).0.0"
+          } elseif ($latestParts[1] -ne $currentParts[1]) {
+            $newVersion = "$($currentParts[0]).$(($currentParts[1] + 1)).0"
+          } else {
+            $newVersion = "$($currentParts[0]).$($currentParts[1]).$(($currentParts[2] + 1))"
+          }
+
+          echo "new_version=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Download binaries
+        shell: pwsh
+        run: |
+          $platforms = @("windows_amd64", "linux_amd64", "linux_arm64", "darwin_amd64", "darwin_arm64")
+          $binDir = "bin/$latestRelease"
+          New-Item -ItemType Directory -Path $binDir -Force | Out-Null
+          foreach ($platform in $platforms) {
+            $url = "https://github.com/tmccombs/hcl2json/releases/download/$latestRelease/hcl2json_$platform"
+            $outputPath = "$binDir/hcl2json_$platform"
+            Invoke-WebRequest -Uri $url -OutFile $outputPath
+          }
+
+      - name: Update module version
+        shell: pwsh
+        run: |
+          (Get-Content -Path "Hcl2PS.psm1") -replace '\$Script:Hcl2JsonVersion = \".*\"', "\$Script:Hcl2JsonVersion = \"$latestRelease\"" | Set-Content -Path "Hcl2PS.psm1"
+          (Get-Content -Path "Hcl2PS.psd1") -replace 'ModuleVersion\s+=\s+\".*\"', "ModuleVersion = \"$new_version\"" | Set-Content -Path "Hcl2PS.psd1"
+
+      - name: Update changelog
+        shell: pwsh
+        run: |
+          $changelogEntry = "## v$new_version`n`nUpdate Hcl2Json CLI to $latestRelease version by @github-actions in this PR`n"
+          $changelog = Get-Content -Path "changelog.md"
+          Set-Content -Path "changelog.md" -Value @($changelogEntry, $changelog)
+
+      - name: Commit and push changes
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -b "update-hcl2json-$latestRelease"
+          git add .
+          git commit -m "Update hcl2json CLI to version $latestRelease and module version to $new_version"
+          git push origin "update-hcl2json-$latestRelease"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update hcl2json CLI to version $latestRelease and module version to $new_version"
+          branch: "update-hcl2json-$latestRelease"
+          title: "Update hcl2json CLI to version $latestRelease and module version to $new_version"
+          body: "This PR updates the hcl2json CLI binaries to version $latestRelease, updates the module version to $new_version, and updates the changelog accordingly."
