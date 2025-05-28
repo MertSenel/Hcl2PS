@@ -29,6 +29,24 @@ jobs:
             exit 0
           }
 
+      - name: Determine module version update
+        id: determine_version
+        shell: pwsh
+        run: |
+          $currentModuleVersion = Get-Content -Path "Hcl2PS.psd1" | Select-String -Pattern 'ModuleVersion\s+=\s+\"(.*?)\"' | ForEach-Object { $_.Matches.Groups[1].Value }
+          $currentParts = $currentModuleVersion -split '\.'
+          $latestParts = $latestRelease -split '\.'
+
+          if ($latestParts[0] -ne $currentParts[0]) {
+            $newVersion = "$(($currentParts[0] + 1)).0.0"
+          } elseif ($latestParts[1] -ne $currentParts[1]) {
+            $newVersion = "$($currentParts[0]).$(($currentParts[1] + 1)).0"
+          } else {
+            $newVersion = "$($currentParts[0]).$($currentParts[1]).$(($currentParts[2] + 1))"
+          }
+
+          echo "new_version=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: Download binaries
         shell: pwsh
         run: |
@@ -45,6 +63,14 @@ jobs:
         shell: pwsh
         run: |
           (Get-Content -Path "Hcl2PS.psm1") -replace '\$Script:Hcl2JsonVersion = \".*\"', "\$Script:Hcl2JsonVersion = \"$latestRelease\"" | Set-Content -Path "Hcl2PS.psm1"
+          (Get-Content -Path "Hcl2PS.psd1") -replace 'ModuleVersion\s+=\s+\".*\"', "ModuleVersion = \"$new_version\"" | Set-Content -Path "Hcl2PS.psd1"
+
+      - name: Update changelog
+        shell: pwsh
+        run: |
+          $changelogEntry = "## v$new_version`n`nUpdate Hcl2Json CLI to $latestRelease version by @github-actions in this PR`n"
+          $changelog = Get-Content -Path "changelog.md"
+          Set-Content -Path "changelog.md" -Value @($changelogEntry, $changelog)
 
       - name: Commit and push changes
         shell: pwsh
@@ -53,14 +79,14 @@ jobs:
           git config user.email "github-actions@github.com"
           git checkout -b "update-hcl2json-$latestRelease"
           git add .
-          git commit -m "Update hcl2json CLI to version $latestRelease"
+          git commit -m "Update hcl2json CLI to version $latestRelease and module version to $new_version"
           git push origin "update-hcl2json-$latestRelease"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update hcl2json CLI to version $latestRelease"
+          commit-message: "Update hcl2json CLI to version $latestRelease and module version to $new_version"
           branch: "update-hcl2json-$latestRelease"
-          title: "Update hcl2json CLI to version $latestRelease"
-          body: "This PR updates the hcl2json CLI binaries to version $latestRelease and updates the module version accordingly."
+          title: "Update hcl2json CLI to version $latestRelease and module version to $new_version"
+          body: "This PR updates the hcl2json CLI binaries to version $latestRelease, updates the module version to $new_version, and updates the changelog accordingly."
