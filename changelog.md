@@ -1,7 +1,7 @@
 # CHANGELOG
 ## v0.6.2
 
-Update Hcl2Json CLI to 0.6.7 version by @MertSenel in #18
+Update Hcl2Json CLI to 0.6.7 version by @MertSenel in #21
 
 ## v0.6.1
 
