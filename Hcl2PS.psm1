@@ -1,4 +1,4 @@
-﻿$Script:Hcl2JsonVersion = '0.6.7'
+﻿$Script:Hcl2JsonVersion = '0.6.8'
 
 foreach ($directory in @('Public', 'Private')) {
     if (Test-Path -Path "$PSScriptRoot\$directory") {
@@ -6,8 +6,13 @@ foreach ($directory in @('Public', 'Private')) {
     }
 }
 
-$Script:executableName = if ($IsWindows -or ($PSVersionTable.PSVersion.Major -eq 5)) {
-    "hcl2json_windows_amd64.exe"
+$Script:executableName = if ($IsWindows) {
+    if (($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') -or ($PSVersionTable.PSVersion.Major -eq 5)) {
+        "hcl2json_windows_amd64.exe"
+    }
+    elseif ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
+        "hcl2json_windows_arm64.exe"
+    }
 }
 elseif ($IsLinux) {
     if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {
