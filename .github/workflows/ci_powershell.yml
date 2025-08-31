@@ -26,16 +26,3 @@ jobs:
           $PSVersionTable
           cd ./__tests__/unit
           Invoke-Pester -Output Detailed
-
-  validate_powershell_arm:
-    name: "validate in powershell on windows-arm64"
-    runs-on: windows-arm64
-    steps:
-      - uses: actions/checkout@v1
-      - name: Run Continuous Integration Powershell (ARM)
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: |
-          $PSVersionTable
-          cd ./__tests__/unit
-          Invoke-Pester -Output Detailed
