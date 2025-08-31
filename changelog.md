@@ -1,4 +1,9 @@
 # CHANGELOG
+## v0.6.3
+
+- Update Hcl2Json CLI to 0.6.8 version by @MertSenel in #22
+- Added support for Arm64 CPU Architecture for Windows OS
+
 ## v0.6.2
 
 Update Hcl2Json CLI to 0.6.7 version by @MertSenel in #21
