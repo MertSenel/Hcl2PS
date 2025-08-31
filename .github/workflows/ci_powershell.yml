@@ -30,6 +30,7 @@ jobs:
   validate_powershell_arm:
     name: "validate in powershell on windows-arm64"
     runs-on: windows-arm64
+    needs: []
     steps:
       - uses: actions/checkout@v1
       - name: Run Continuous Integration Powershell (ARM)
